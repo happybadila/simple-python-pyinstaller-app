@@ -20,12 +20,17 @@ pipeline {
             }
             steps {
                 sh 'py.test --junit-xml test-reports/results.xml sources/test_calc.py'
-		input message: 'Lanjutkan ke tahap deploy ? (Click "Proceed" to continue)'
-            }
+	    }
             post {
                 always {
                     junit 'test-reports/results.xml'
                 }
+            }
+        }
+	stage('Manual Approval'){
+            agent any
+            steps {
+                input message: 'Lanjutkan ke tahap Deploy? (Click "Proceed" to continue)'
             }
         }
         stage('Deploy') {
